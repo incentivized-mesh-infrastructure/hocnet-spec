@@ -71,7 +71,7 @@ Either way, the issue is a lack of information about the total capacity of the r
 Another question is for how long to continue to apply the adjusted metric after receiving an ack. If this period is too short, then nodes will go right back to trusting an inaccurate metric that they recently had to correct. If this period is too long, then nodes will miss out on legitimate updates about newly improved routes.
 
 To strike the right balance, exponentially increasing time-out will be used for bandwidth corrections beyond a small tolerance. A node that has participated in a correction will record the time it last performed a correction for a given route $T_{last}$ and the size of the correction $\delta$. When participating in another correction on the same route the amount of time to apply the bandwidth correction after the ack has expired will be determined as:
-
+\newline
 \newline
 $T_{adjustment} = \frac{C_1}{T_{now} - T_{last}}^{C_2\delta}$
 \newline
