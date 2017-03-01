@@ -72,14 +72,11 @@ Another question is for how long to continue to apply the adjusted metric after 
 
 To strike the right balance, exponentially increasing time-out will be used for bandwidth corrections beyond a small tolerance. A node that has participated in a correction will record the time it last performed a correction for a given route $T_{last}$ and the size of the correction $\delta$. When participating in another correction on the same route the amount of time to apply the bandwidth correction after the ack has expired will be determined as:
 \newline
+\[
+T_{adjustment} = \frac{C_1}{T_{now} - T_{last}}^{\delta C_2}
+\]
 \newline
-$T_{adjustment} = \frac{C_1}{T_{now} - T_{last}}^{C_2\delta}$
-\newline
-
-Where $C_1$ and  $C_2$ are constants to be adjusted and hardcoded. The goal of this formula is to provide a longer adjustment time based on nodes stopping quickly returning to adjusting the same route and further increased by the magnitude of the route adjustment since these characteristics fit the expected profile of a malicious node that can't provide any actual use to the network.
-
-\subsubsection{Duration of throughput corrections}
-
+Where $C_1$ and  $C_2$ are constants to be adjusted and hardcoded. This formula will make it take longer to go back to using a neighbor's advertised metrics if the advertised metrics needed to be corrected recently, and/or required a large correction.
 
 \medskip
 
