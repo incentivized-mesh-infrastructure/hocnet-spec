@@ -78,6 +78,23 @@ T_{adjustment} = \frac{C_1}{T_{now} - T_{last}}^{\delta C_2}
 \newline
 Where $C_1$ and  $C_2$ are constants to be adjusted and hardcoded. This formula will make it take longer to go back to using a neighbor's advertised metrics if the advertised metrics needed to be corrected recently, and/or required a large correction.
 
+\subsubsection{Local reputation}
+
+The adjustment timing mechanism above provides some defense against nodes making bad route advertisements. If a node makes an inaccurate advertisement, its future updates will be disregarded for a time. The more inaccurate the advertisement, the longer the time. However, if the node simply changes its public key, it will appear as a new node. Its updates will again be taken at face value.
+
+Also, the entire mechanism so far only verifies routes that are being used. The power of distance-vector routing protocols is that they proactively propagate information about all routes on the network. When a node receives a packet, it is able to route the packet to the best next hop immediately. There needs to be some way to gain information about the reliability of routes that have not yet been verified.
+
+If a node has seen that a given neighbor's route advertisements are generally very accurate, it can be confident of two things. One, that the neighbor itself will not be the source of any route advertisement innacuracies. Two, that the neighbor is able to correct for the innacuracies of nodes further away.
+
+These assumptions hold for routes through that neighbor which have never been used or verified. In this way, we can transfer the information gained from the verification of a few routes to many other unverified routes through that neighbor.
+
+Because of this evidence of accuracy, it makes sense for to have a preference for routes through reliable neighbors. A naive way to do this would be to simply improve the routing metrics of reliable neighbors. For example, a reliable neighbor would get 30\% extra throughput added to routes that they advertised, if throughput was the metric being used.
+
+However, this would fail to produce the desired effect in the presence of new unreliable neighbors advertising wildly inaccurate routes. If a new neighbor pops up advertising an (inaccurate) throughput of 1gbps, the extra 30\% added to a reliable neighbor's accurate advertisement of a route with a throughput of 100mbps would not make a difference. The new neighbor's inaccurate route would still be chosen, and would be used until it was verified and discovered to be inaccurate.
+
+--- DRAFT ---
+One way to solve this could be to use a tiered system. New neighbors with no routes that had been used and verified would go in the first tier. The remaining tiers would be made up of neighbors with higher degrees of reliability. During route selection, routes through neighbors from higher tiers would be chosen more frequently than those in lower tiers.
+---
 \medskip
 
 
