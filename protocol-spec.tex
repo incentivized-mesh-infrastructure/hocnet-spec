@@ -93,7 +93,7 @@ Because of this evidence of accuracy, it makes sense for to have a preference fo
 However, this would fail to produce the desired effect in the presence of new unreliable neighbors advertising wildly inaccurate routes. If a new neighbor pops up advertising an (inaccurate) throughput of 1gbps, the extra 30\% added to a reliable neighbor's accurate advertisement of a route with a throughput of 100mbps would not make a difference. The new neighbor's inaccurate route would still be chosen, and would be used until it was verified and discovered to be inaccurate.
 
 --- DRAFT ---
-One way to solve this could be to use a tiered system. New neighbors with no routes that had been used and verified would go in the first tier. The remaining tiers would be made up of neighbors with higher degrees of reliability. During route selection, routes through neighbors from higher tiers would be chosen more frequently than those in lower tiers.
+One way to solve this could be to use a tiered system. New neighbors with no routes that had been used and verified would go in the first tier. The remaining tiers would be made up of neighbors with higher degrees of reliability. During route selection, routes through neighbors from higher tiers would be chosen more frequently than those in lower tiers. This would prevent very inaccurate routes from circumventing the system, while still allowing new neighbors a chance to prove themselves.
 ---
 \medskip
 
