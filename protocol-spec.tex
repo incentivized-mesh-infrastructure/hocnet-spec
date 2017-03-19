@@ -92,9 +92,22 @@ Because of this evidence of accuracy, it makes sense for to have a preference fo
 
 However, this would fail to produce the desired effect in the presence of new unreliable neighbors advertising wildly inaccurate routes. If a new neighbor pops up advertising an (inaccurate) throughput of 1gbps, the extra 30\% added to a reliable neighbor's accurate advertisement of a route with a throughput of 100mbps would not make a difference. The new neighbor's inaccurate route would still be chosen, and would be used until it was verified and discovered to be inaccurate.
 
---- DRAFT ---
-One way to solve this could be to use a tiered system. New neighbors with no routes that had been used and verified would go in the first tier. The remaining tiers would be made up of neighbors with higher degrees of reliability. During route selection, routes through neighbors from higher tiers would be chosen more frequently than those in lower tiers. This would prevent very inaccurate routes from circumventing the system, while still allowing new neighbors a chance to prove themselves.
----
+-- draft option 1 --
+
+One way to solve this could be to use a tiered system. New neighbors with no routes that had been used and verified would go in the lowest tier. The remaining tiers would be made up of neighbors with higher degrees of reliability. During route selection, routes through neighbors from higher tiers would be chosen more frequently than those in lower tiers. This would prevent very inaccurate routes from circumventing the system, while still allowing new neighbors a chance to prove themselves.
+
+Each tier would be used a certain percentage of the time. For example the lowest tier could be used 5\% of the time. When routing traffic to a destination, 5\% of the time, the best neighbor from the lowest tier would be used. The rest of the time, neighbors from the higher tiers would be used.
+
+If a node made inaccurate route advertisements it would be moved into a lower tier.
+
+This is still vulnerable to shenanigans in the lowest tier. There is nothing stopping a node from making 1000 fake new nodes to increase the odds that that one of its fake nodes will be chosen instead of other new nodes. There's also nothing stopping neighbors in the lowest tier from advertising inaccurate metrics.
+
+The higher tiers are not as vulnerable, since to get into a higher tier, a node needs to have demonstrated accurate route advertisement already. Also, nodes in the higher tiers are obviously incentivized to make sure that their advertisements are accurate to avoid losing their status.
+
+So, in this scheme, there needs to be some minimum of cost to get into the lowest tier to protect against sybil attacks. We will leave this unspecified, as different use-cases could use different mechanisms.
+
+--- end draft option 1 ---
+
 \medskip
 
 
